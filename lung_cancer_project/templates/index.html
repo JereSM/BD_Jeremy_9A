@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predicción de Cáncer de Pulmón</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: radial-gradient(circle at top, #0d0d0f, #080808, #000);
+            color: #e6e6e6;
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+        }
+
+        .card {
+            background: rgba(15, 15, 30, 0.9);
+            border: 1px solid rgba(255, 0, 255, 0.3);
+            box-shadow: 0 0 25px rgba(255, 0, 255, 0.2);
+            border-radius: 15px;
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff, 0 0 20px #7700ff;
+        }
+
+        label {
+            color: #a7a7a7;
+            font-weight: 500;
+        }
+
+        .form-select, .form-control {
+            background-color: #121212;
+            border: 1px solid #2b2b2b;
+            color: #fff;
+            border-radius: 8px;
+        }
+
+        .form-select:focus, .form-control:focus {
+            border-color: #00ffff;
+            box-shadow: 0 0 10px #00ffff;
+            background-color: #181818;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #ff00ff, #00ffff);
+            border: none;
+            color: #000;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff00ff;
+            transition: all 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 25px #00ffff, 0 0 50px #ff00ff;
+            transform: scale(1.05);
+        }
+
+        p.text-muted {
+            color: #b3b3b3 !important;
+        }
+
+        .container {
+            max-width: 900px;
+        }
+
+        select option {
+            background-color: #121212;
+            color: #fff;
+        }
+
+        ::selection {
+            background: #00ffff;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="card shadow p-4 border-0">
+            <h2 class="text-center mb-3 fw-bold">Predicción de Cáncer de Pulmón</h2>
+            <p class="text-center text-muted mb-4">
+                Completa el siguiente formulario para estimar el nivel de riesgo con base en tus características y hábitos.
+            </p>
+
+            <form action="/predict" method="post">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Género</label>
+                        <select name="GENDER" class="form-select" required>
+                            <option value="M">Masculino</option>
+                            <option value="F">Femenino</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Edad</label>
+                        <input type="number" name="AGE" class="form-control" min="1" max="120" placeholder="Ejemplo: 45" required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">¿Eres fumador?</label>
+                        <select name="SMOKING" class="form-select" required>
+                            <option value="2">Sí</option>
+                            <option value="1">No</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">¿Tienes los dedos amarillos?</label>
+                        <select name="YELLOW_FINGERS" class="form-select" required>
+                            <option value="2">Sí</option>
+                            <option value="1">No</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">¿Sufres de ansiedad?</label>
+                        <select name="ANXIETY" class="form-select" required>
+                            <option value="2">Sí</option>
+                            <option value="1">No</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">¿Sientes presión social para fumar?</label>
+                        <select name="PEER_PRESSURE" class="form-select" required>
+                            <option value="2">Sí</option>
+                            <option value="1">No</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">¿Tienes una enfermedad crónica?</label>
+                        <select name="CHRONIC_DISEASE" class="form-select" required>
+                            <option value="2">Sí</option>
+                            <option value="1">No</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">¿Sientes fatiga frecuente?</label>
+                        <select name="FATIGUE" class="form-select" required>
+                            <option value="2">Sí</option>
+                            <option value="1">No</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">¿Tienes alergias?</label>
+                        <select name="ALLERGY" class="form-select" required>
+                            <option value="2">Sí</option>
+                            <option value="1">No</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">¿Tienes sibilancias (silbidos al respirar)?</label>
+                        <select name="WHEEZING" class="form-select" required>
+                            <option value="2">Sí</option>
+                            <option value="1">No</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">¿Consumes alcohol?</label>
+                        <select name="ALCOHOL_CONSUMING" class="form-select" required>
+                            <option value="2">Sí</option>
+                            <option value="1">No</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">¿Tienes tos frecuente?</label>
+                        <select name="COUGHING" class="form-select" required>
+                            <option value="2">Sí</option>
+                            <option value="1">No</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">¿Tienes dificultad para respirar?</label>
+                        <select name="SHORTNESS_OF_BREATH" class="form-select" required>
+                            <option value="2">Sí</option>
+                            <option value="1">No</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">¿Tienes dificultad para tragar?</label>
+                        <select name="SWALLOWING_DIFFICULTY" class="form-select" required>
+                            <option value="2">Sí</option>
+                            <option value="1">No</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">¿Sufres dolor en el pecho?</label>
+                        <select name="CHEST_PAIN" class="form-select" required>
+                            <option value="2">Sí</option>
+                            <option value="1">No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button class="btn btn-primary px-4 py-2">
+                        Predecir Riesgo
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
