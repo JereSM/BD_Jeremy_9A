@@ -4,21 +4,21 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.preprocessing import OneHotEncoder, StandardScaler, LabelEncoder
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-from sklearn.impute import SimpleImputer
-from sklearn.linear_model import LogisticRegression
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, recall_score, f1_score, confusion_matrix, roc_auc_score, roc_curve, classification_report
+from   sklearn.model_selection import train_test_split, GridSearchCV
+from   sklearn.preprocessing import OneHotEncoder, StandardScaler, LabelEncoder
+from   sklearn.compose import ColumnTransformer
+from   sklearn.pipeline import Pipeline
+from   sklearn.impute import SimpleImputer
+from   sklearn.linear_model import LogisticRegression
+from   sklearn.neighbors import KNeighborsClassifier
+from   sklearn.ensemble import RandomForestClassifier
+from   sklearn.metrics import accuracy_score, recall_score, f1_score, confusion_matrix, roc_auc_score, roc_curve, classification_report
 import joblib
 
 # CONFIG
-DATA_PATH = "data/survey_lung_cancer.csv"
+DATA_PATH    = "data/survey_lung_cancer.csv"
 OUTPUT_MODEL = "models/best_pipeline.joblib"
-REPORTS_DIR = "reports"
+REPORTS_DIR  = "reports"
 
 os.makedirs("models", exist_ok=True)
 os.makedirs(REPORTS_DIR, exist_ok=True)
@@ -26,7 +26,7 @@ os.makedirs(REPORTS_DIR, exist_ok=True)
 # 1) Cargar dataset
 df = pd.read_csv(DATA_PATH)
 
-# Limpieza de nombres de columnas (eliminar espacios extra)
+# Limpieza de nombres de columnas (eliminar espacios extra, el excel los tiene por alguna razon)
 df.columns = [c.strip().replace(" ", "_") for c in df.columns]
 
 print("Columns:", df.columns.tolist())
@@ -41,8 +41,8 @@ if df['LUNG_CANCER'].dtype == object:
     if df['LUNG_CANCER'].isnull().any():
         print("Atención: hay valores no mapeados en LUNG_CANCER:", df['LUNG_CANCER'].unique())
 
-# 3) EDA básica
-print("\n--- Descripción estadística ---")
+# 3) EDA basica
+print("\n--- Descripción estadistica ---")
 print(df.describe(include='all').transpose())
 
 # Detección de nulos
@@ -61,6 +61,8 @@ plt.close()
 num_cols = df.select_dtypes(include=[np.number]).columns.tolist()
 if 'LUNG_CANCER' in num_cols:
     num_cols.remove('LUNG_CANCER')
+
+# Para cada columna numérica, crea histogramas
 for col in num_cols:
     plt.figure()
     sns.histplot(df[col].dropna(), kde=True)
@@ -71,6 +73,7 @@ for col in num_cols:
 
 # Conteo de variables categóricas
 cat_cols = df.select_dtypes(include=['object']).columns.tolist()
+# Para cada columna categórica, crea gráficos de barras
 for col in cat_cols:
     plt.figure(figsize=(6,4))
     df[col].value_counts(dropna=False).plot(kind='bar')
@@ -79,7 +82,7 @@ for col in cat_cols:
     plt.savefig(f"{REPORTS_DIR}/count_{col}.png")
     plt.close()
 
-# Correlación
+# Matriz de correlación
 plt.figure(figsize=(12,10))
 corr = df.select_dtypes(include=[np.number]).corr()
 sns.heatmap(corr, annot=True, fmt=".2f", cmap="vlag")
@@ -100,7 +103,7 @@ categorical_features = X.select_dtypes(exclude=[np.number]).columns.tolist()
 print("Numéricos:", numeric_features)
 print("Categóricos:", categorical_features)
 
-# Si hay columnas categóricas que en realidad son '1','2' codificadas como string, convertir:
+# Si hay columnas categóricas estas siendo >>> '1','2' codificadas como string, convertir:
 for c in categorical_features:
     # if values are numeric strings, convert to numeric
     if X[c].dropna().apply(lambda v: str(v).isdigit()).all():
@@ -109,7 +112,7 @@ for c in categorical_features:
     else:
         # keep as categorical
         pass
-# re-eval categorical list
+# reeval categorical list
 numeric_features = X.select_dtypes(include=[np.number]).columns.tolist()
 categorical_features = X.select_dtypes(exclude=[np.number]).columns.tolist()
 print("Final Numéricos:", numeric_features)

@@ -1,9 +1,9 @@
-### This was for smt else, los reportes se generan desde train.py ###
+### This was for smt else, los reportes se generan desde train.py ##
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
-# === CONFIGURACIÓN ===
+# === CONFIGURACION ===
 DATASET_PATH = "data/survey_lung_cancer.csv"  
 REPORTS_DIR = "reports_2" # Carpeta para guardar reportes_2 (para que no choquen con los de train.py :^) )
 
@@ -18,12 +18,12 @@ except FileNotFoundError:
     print("Error: No se encontró el archivo del dataset. Verifica el nombre y la ruta.")
     exit()
 
-# === ANÁLISIS DESCRIPTIVO ===
+# === ANALISIS DESCRIPTIVO ===
 desc = df.describe(include='all')
 desc.to_csv(os.path.join(REPORTS_DIR, "dataset_description.csv"))
 print("Archivo 'dataset_description.csv' generado.")
 
-# === GRÁFICAS ===
+# === GRAFICAS ===
 
 # Distribución de edadesss
 plt.figure(figsize=(8, 5))
@@ -34,7 +34,7 @@ plt.ylabel("Frecuencia")
 plt.savefig(os.path.join(REPORTS_DIR, "age_distribution.png"))
 plt.close()
 
-# Distribución por género
+# Distribución por genero
 plt.figure(figsize=(6, 4))
 df["GENDER"].value_counts().plot(kind="bar", color=['lightcoral', 'lightblue'])
 plt.title("Distribución por género")

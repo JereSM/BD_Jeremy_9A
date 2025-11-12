@@ -1,3 +1,5 @@
+#Mismo proceso para guardar el modelo entrenado en un archivo .pkl, en train.py 
+# se sabe que el mejor modelo es regresion logistica, por lo que se guarda de manera directa ese modelo.
 import pandas as pd
 from   sklearn.model_selection import train_test_split
 from   sklearn.preprocessing import LabelEncoder
